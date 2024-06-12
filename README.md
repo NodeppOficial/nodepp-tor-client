@@ -13,7 +13,7 @@ void onMain() {
 
     tor_fetch_t args;
     args.timeout = 0;
-    args.methodo = "GET";
+    args.method  = "GET";
     args.url     = "http://check.torproject.org/";
     args.headers = header_t({
         { "host", "check.torproject.org" }
