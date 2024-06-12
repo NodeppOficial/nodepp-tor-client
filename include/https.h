@@ -26,9 +26,6 @@ namespace nodepp { namespace tor { namespace https {
            auto ssl = type::bind( ctx );
     return promise_t<https_t,except_t>([=]( function_t<void,https_t> res, function_t<void,except_t> rej ){
 
-        if( ssl->create_client() == -1 )
-          { rej(except_t("Error Initializing SSL context")); return; }
-
         if( !url::is_valid( gfc->url ) ){ rej(except_t("invalid URL")); return; }
         
         url_t    uri = url::parse( gfc->url );
@@ -36,6 +33,9 @@ namespace nodepp { namespace tor { namespace https {
         string_t dir = uri.pathname + uri.search + uri.hash;
        
         auto client = tcp_t ([=]( http_t cli ){ int c = 0; cli.set_timeout( gfc->timeout );
+
+            if( ssl->create_client() == -1 )
+              { rej(except_t("Error Initializing SSL context")); return; }
 
             cli.write( ptr_t<char>({ 0x05, 0x01, 0x00, 0x00 }) );
             if( cli.read(2)!=ptr_t<char>({ 0x05, 0x00, 0x00 }) ){ 

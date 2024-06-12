@@ -1,4 +1,5 @@
 #include <nodepp/nodepp.h>
+#include <nodepp/url.h>
 #include <http.h>
 
 using namespace nodepp;
@@ -10,7 +11,7 @@ void onMain() {
     args.method  = "GET";
     args.url     = "http://check.torproject.org/";
     args.headers = header_t({
-        { "host", "check.torproject.org" }
+        { "host", url::hostname( args.url ) }
     });
 
     tor::http::fetch( args )

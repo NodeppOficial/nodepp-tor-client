@@ -1,5 +1,5 @@
 #include <nodepp/nodepp.h>
-#include <nodepp/fs.h>
+#include <nodepp/url.h>
 #include <https.h>
 
 using namespace nodepp;
@@ -13,7 +13,7 @@ void onMain() {
     args.method  = "GET";
     args.url     = "https://check.torproject.org/";
     args.headers = header_t({
-        { "host", "check.torproject.org" }
+        { "host", url::hostname( args.url ) }
     });
 
     tor::https::fetch( args, &ssl )
