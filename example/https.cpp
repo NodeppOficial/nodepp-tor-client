@@ -9,7 +9,8 @@ void onMain() {
     ssl_t ssl ( "ssl/cert.key", "ssl/cert.crt" );
 
     tor_fetch_t args;
-    args.timeout = 0; // disable timeout
+    args.timeout = 0;
+    args.method  = "GET";
     args.url     = "https://check.torproject.org/";
     args.headers = header_t({
         { "host", "check.torproject.org" }
