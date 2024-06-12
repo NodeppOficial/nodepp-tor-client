@@ -6,7 +6,8 @@ using namespace nodepp;
 void onMain() {
 
     tor_fetch_t args;
-    args.timeout = 0; // disable timeout
+    args.timeout = 0;
+    args.method  = "GET";
     args.url     = "http://check.torproject.org/";
     args.headers = header_t({
         { "host", "check.torproject.org" }
