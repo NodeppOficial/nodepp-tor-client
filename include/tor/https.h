@@ -11,8 +11,7 @@
 #ifndef NODEPP_TOR_FETCH_T
 #define NODEPP_TOR_FETCH_T
 namespace nodepp { struct tor_fetch_t : public fetch_t {
-    string_t tor_host = "localhost";
-    uint     tor_port = 9050;
+    string_t tor = "tcp://localhost:9050";
 };}
 #endif
 
@@ -70,7 +69,11 @@ namespace nodepp { namespace tor { namespace https {
         }, &agn );
 
         client.onError([=]( except_t error ){ rej(error); });
-        client.connect( gfc->tor_host, gfc->tor_port );
+        
+        client.connect( 
+            url::hostname(gfc->tor), 
+            url::port(gfc->tor) 
+        );
 
     }); }
 
