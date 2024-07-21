@@ -34,7 +34,7 @@ namespace nodepp { namespace tor { namespace http {
 
             cli.write( ptr_t<char>({ 0x05, 0x01, 0x00, 0x00 }) );
             if( cli.read(2)!=ptr_t<char>({ 0x05, 0x00, 0x00 }) ){ 
-                rej(except_t("Could not connect to server"));
+                rej(except_t("Error while Handshaking Sock5"));
                 cli.close(); return; 
             }
 

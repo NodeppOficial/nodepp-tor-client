@@ -31,14 +31,14 @@ namespace nodepp { namespace tor { namespace https {
         string_t dip = uri.hostname ;
         string_t dir = uri.pathname + uri.search + uri.hash;
        
-        auto client = tcp_t ([=]( http_t cli ){ int c = 0; cli.set_timeout( gfc->timeout );
+        auto client = tcp_t ([=]( socket_t cli ){ int c = 0; cli.set_timeout( gfc->timeout );
 
             if( ssl->create_client() == -1 )
               { rej(except_t("Error Initializing SSL context")); return; }
 
             cli.write( ptr_t<char>({ 0x05, 0x01, 0x00, 0x00 }) );
             if( cli.read(2)!=ptr_t<char>({ 0x05, 0x00, 0x00 }) ){ 
-                rej(except_t("Could not connect to server"));
+                rej(except_t("Error while Handshaking Sock5"));
                 cli.close(); return; 
             }
 
@@ -48,8 +48,8 @@ namespace nodepp { namespace tor { namespace https {
             cli.write( dip ); cli.write( ptr_t<char>({ 0x00, prt, 0x00 }) );
             cli.read();
 
-            https_t sk = *type::cast<https_t>(&cli); 
-            sk.ssl = new ssl_t( *ssl, sk.get_fd() );
+            https_t sk = *type::cast<ssocket_t>(&cli); 
+            sk.ssl = new ssl_t( *ssl, cli.get_fd() );
             sk.ssl->set_hostname( dip );
 
             if( sk.ssl->connect() <= 0 ){ 
